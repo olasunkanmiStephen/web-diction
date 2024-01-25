@@ -14,11 +14,19 @@ function App() {
       setResults(data[0]);
 
       // Fetch synonyms
-      const synonymsResponse = await fetch('https://api.datamuse.com/words?rel_syn=' + word);
+      const synonymsResponse = await fetch(`https://api.datamuse.com/words?rel_syn=${word}`);
       const synonymsData = await synonymsResponse.json();
       setResults(prevResults => ({
         ...prevResults,
         synonyms: synonymsData.map(synonym => synonym.word)
+      }));
+
+      // Fetch antonyms
+      const antonymsResponse = await fetch(`https://api.datamuse.com/words?rel_ant=${word}`);
+      const antonymsData = await antonymsResponse.json();
+      setResults(prevResults => ({
+        ...prevResults,
+        antonyms: antonymsData.map(antonym => antonym.word)
       }));
     };
 
@@ -53,6 +61,7 @@ function App() {
             partOfSpeech={results.meanings[0]?.partOfSpeech}
             definitions={results.meanings[0]?.definitions}
             synonyms={results.synonyms || []}
+            antonyms={results.antonyms || []}
           />
         </>
       )}

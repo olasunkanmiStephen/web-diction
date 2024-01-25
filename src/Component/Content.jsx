@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Content({ partOfSpeech, definitions }) {
+function Content({ partOfSpeech, definitions, synonyms, antonyms }) {
   return (
     <div>
       <div className="flex">
@@ -13,9 +13,26 @@ function Content({ partOfSpeech, definitions }) {
           <li key={index}>{def.definition}</li>
         ))}
       </ul>
-      <p>
-        Synonyms <span>Hello</span>
-      </p>
+      {synonyms.length > 0 && (
+        <p>
+          Synonyms
+          <ul>
+            {synonyms.map((synonym, index) => (
+              <li key={index}>{synonym}</li>
+            ))}
+          </ul>
+        </p>
+      )}
+      {antonyms.length > 0 && (
+        <p>
+          Antonyms
+          <ul>
+            {antonyms.map((antonym, index) => (
+              <li key={index}>{antonym}</li>
+            ))}
+          </ul>
+        </p>
+      )}
     </div>
   );
 }

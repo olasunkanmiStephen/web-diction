@@ -1,14 +1,22 @@
+import React from 'react';
 
-function Heading() {
-    return (
-      <div className="flex flex-row justify-between my-5">
+function Heading({ word, phonetic }) {
+  const playAudio = () => {
+    const utterance = new SpeechSynthesisUtterance(word);
+    window.speechSynthesis.speak(utterance);
+  };
+
+  return (
+    <div className="flex flex-row justify-between my-5">
       <h3>
-        Human
-        <span className="block font-light">/?fj*(nk</span>
+        {word}
+        <span className="block font-light">{phonetic}</span>
       </h3>
-      <button className="bg-indigo-300 h-20 w-20 rounded-full">Play</button>
+      <button onClick={playAudio} className="bg-indigo-300 h-20 w-20 rounded-full">
+        Play
+      </button>
     </div>
-    )
-  }
-  
-  export default Heading
+  );
+}
+
+export default Heading;
