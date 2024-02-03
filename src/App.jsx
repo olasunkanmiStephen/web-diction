@@ -1,37 +1,37 @@
-import { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Content from "./Component/Content";
 import Heading from "./Component/Heading";
 
 function App() {
   const [word, setWord] = useState('');
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState(null); // Use null as the initial state
 
-  useEffect(() => {
-    const fetchData = async () => {
-      // Fetch word information
-      const response = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + word);
-      const data = await response.json();
-      setResults(data[0]);
+  const fetchData = async () => {
+    // Fetch word information
+    const response = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + word);
+    const data = await response.json();
+    setResults(data[0]);
 
-      // Fetch synonyms
-      const synonymsResponse = await fetch(`https://api.datamuse.com/words?rel_syn=${word}`);
-      const synonymsData = await synonymsResponse.json();
-      setResults(prevResults => ({
-        ...prevResults,
-        synonyms: synonymsData.map(synonym => synonym.word)
-      }));
+    // Fetch synonyms
+    const synonymsResponse = await fetch(`https://api.datamuse.com/words?rel_syn=${word}`);
+    const synonymsData = await synonymsResponse.json();
+    setResults(prevResults => ({
+      ...prevResults,
+      synonyms: synonymsData.map(synonym => synonym.word)
+    }));
 
-      // Fetch antonyms
-      const antonymsResponse = await fetch(`https://api.datamuse.com/words?rel_ant=${word}`);
-      const antonymsData = await antonymsResponse.json();
-      setResults(prevResults => ({
-        ...prevResults,
-        antonyms: antonymsData.map(antonym => antonym.word)
-      }));
-    };
+    // Fetch antonyms
+    const antonymsResponse = await fetch(`https://api.datamuse.com/words?rel_ant=${word}`);
+    const antonymsData = await antonymsResponse.json();
+    setResults(prevResults => ({
+      ...prevResults,
+      antonyms: antonymsData.map(antonym => antonym.word)
+    }));
+  };
 
-    fetchData();
-  }, [word]);
+  const handleSearch = async () => {
+    await fetchData();
+  };
 
   return (
     <div className='container mx-auto'>
@@ -46,7 +46,7 @@ function App() {
       />
       <button
         className='mx-20 bg-gray-300 px-3 py-4 rounded-lg'
-        onClick={() => setWord(word)}
+        onClick={handleSearch}
       >
         Search
       </button>
